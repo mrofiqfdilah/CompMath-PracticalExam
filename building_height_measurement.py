@@ -1,12 +1,15 @@
-print("program pengukuran tinggi gedung")
+import math
 
-tinggi_badan_pengamat = float(input("masukan : ")) # 1,52 m
-sudut_elevasi = 3.077
-jarak_pengamat = int(input("masukan jarak pengamat : ")) # 15 m
+def hitung_tinggi_gedung(tinggi_badan, sudut_derajat, jarak):
+    rad = math.radians(sudut_derajat)
+    return tinggi_badan + math.tan(rad) * jarak
 
+print("Program Pengukuran Tinggi Gedung")
 
-count =  jarak_pengamat * sudut_elevasi
+tinggi = float(input("Masukkan tinggi badan pengamat (m): "))
+sudut = float(input("Masukkan sudut elevasi (derajat): "))
+jarak = float(input("Masukkan jarak pengamat (m): "))
 
-hasil = count + tinggi_badan_pengamat
+hasil = hitung_tinggi_gedung(tinggi, sudut, jarak)
 
-print(hasil);
+print(f"Perkiraan tinggi gedung: {hasil:.2f} meter")
