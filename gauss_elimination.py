@@ -4,28 +4,27 @@ def elim_gaussian(aug):
     aug = np.array(aug, float)
     n = aug.shape[0]
 
-    A = aug[:, :-1]
-    b = aug[:, -1]
+    mat = aug[:, :-1]   # matriks koefisien
+    rhs = aug[:, -1]    # kolom hasil
 
-    for i in range(n):
-        if A[i][i] == 0:
-            raise ValueError("Pivot nol!")
+    for pivot_row in range(n):
+        if mat[pivot_row][pivot_row] == 0:
+            raise ValueError("Pivot nol! Tidak dapat dilanjutkan tanpa pivoting.")
         
-        for j in range(i+1, n):
-            faktor = A[j][i] / A[i][i]
-            A[j] = A[j] - faktor * A[i]
-            b[j] = b[j] - faktor * b[i]
+        for target_row in range(pivot_row + 1, n):
+            factor = mat[target_row][pivot_row] / mat[pivot_row][pivot_row]
+            mat[target_row] -= factor * mat[pivot_row]
+            rhs[target_row] -= factor * rhs[pivot_row]
 
-    x = np.zeros(n)
-    for i in range(n-1, -1, -1):
-        x[i] = (b[i] - np.dot(A[i][i+1:], x[i+1:])) / A[i][i]
+    sol = np.zeros(n)
+    for row in range(n - 1, -1, -1):
+        sol[row] = (rhs[row] - np.dot(mat[row][row+1:], sol[row+1:])) / mat[row][row]
 
-    print("\nSolved !")
-    for i in range(n):
-        print(f"x{i+1} = {x[i]:.4f}")
+    print("\nSolved!")
+    for idx in range(n):
+        print(f"x{idx+1} = {sol[idx]:.2f}")
 
-    return x
-
+    return sol
 
 # user input
 n = int(input("Masukkan jumlah variabel (n): "))
